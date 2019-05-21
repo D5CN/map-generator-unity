@@ -10,7 +10,7 @@ public static class MapMeshGenerator
      * 地图切割等级
      */ 
     public static int CUT_LEVEL = 2;
-    public static int DISTANCE = 8;
+    public static int DISTANCE = 16;
     private static float PL_relief = 100.0f;
     private static float PL_maxHeight = 0.28f;
     public static MeshData GenerateMesh(MapGraph mapGraph, HeightMap heightmap, int meshSize)
