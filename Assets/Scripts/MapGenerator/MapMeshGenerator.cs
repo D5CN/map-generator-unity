@@ -10,7 +10,8 @@ public static class MapMeshGenerator
      * 地图切割等级
      */ 
     public static int CUT_LEVEL = 2;
-    public static int DISTANCE = 16;
+    public static int DISTANCE = 10;
+    public static List<MapGraph.MapNode> nowNodeList= new List<MapGraph.MapNode>();
     private static float PL_relief = 100.0f;
     private static float PL_maxHeight = 0.28f;
     public static MeshData GenerateMesh(MapGraph mapGraph, HeightMap heightmap, int meshSize)
@@ -29,6 +30,8 @@ public static class MapMeshGenerator
         // 存放顶点与索引的临时字典类
         Dictionary<Vector3, int> verticesResultDic = new Dictionary<Vector3, int>();
 
+        nowNodeList.RemoveAll(it=>true);
+
         foreach (var node in mapGraph.nodesByCenterPosition.Values)
         {
             p1.x = node.centerPoint.x;
@@ -36,7 +39,7 @@ public static class MapMeshGenerator
 
             if (Vector2.Distance(p1, p2) > DISTANCE) continue;
 
-
+            nowNodeList.Add(node);
             meshData.vertices.Add(node.centerPoint);
             v0 = node.centerPoint;
             var edges = node.GetEdges().ToList();
@@ -69,6 +72,21 @@ public static class MapMeshGenerator
 
         Debug.Log(string.Format("There are {0:n0} vertices ", meshData.vertices.Count()));
         return meshData;
+    }
+
+    public static MapGraph.MapNode isIn(Vector2 p)
+    {
+        MapGraph.MapNode result=null;
+        foreach(var node in nowNodeList)
+        {
+            var r = node.GetBoundingRectangle();
+            if(r.Contains(p))
+            {
+                result = node;
+            }
+        }
+
+        return result;
     }
 
     private static void cutMesh(MeshData meshData,Vector3 v0,Vector3 v1,Vector3 v2,Dictionary<Vector3,int> verticesResultDic,int level)

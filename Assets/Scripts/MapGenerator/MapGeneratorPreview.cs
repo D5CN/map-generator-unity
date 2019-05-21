@@ -46,6 +46,14 @@ public partial class MapGeneratorPreview : MonoBehaviour
         GenerateMap();
     }
 
+    private MapGraph _mapGraph;
+    private HeightMap _heightMap;
+    private void changeCenter(MapGraph.MapNode node)
+    {
+        MapGenerator.setCenter(node);
+        OnMeshDataReceived(MapMeshGenerator.GenerateMesh(_mapGraph, _heightMap, meshSize));
+    }
+
     public void GenerateMap()
     {
 
@@ -59,10 +67,12 @@ public partial class MapGeneratorPreview : MonoBehaviour
         time = DateTime.Now;
         heightMapSettings.noiseSettings.seed = seed;
         var heightMap = HeightMapGenerator.GenerateHeightMap(meshSize, meshSize, heightMapSettings, Vector2.zero);
+        _heightMap = heightMap;
         //Debug.Log(string.Format("Heightmap Generated: {0:n0}ms", DateTime.Now.Subtract(time).TotalMilliseconds));
 
         time = DateTime.Now;
         var mapGraph = new MapGraph(voronoi, heightMap, snapDistance);
+        _mapGraph = mapGraph;
         //Debug.Log(string.Format("Finished Generating Map Graph: {0:n0}ms with {1} nodes", DateTime.Now.Subtract(startTime).TotalMilliseconds, mapGraph.nodesByCenterPosition.Count));
 
         time = DateTime.Now;

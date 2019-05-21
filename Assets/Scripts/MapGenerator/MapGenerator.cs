@@ -68,6 +68,12 @@ public static class MapGenerator
     public static MapGraph.MapNode firstLake {
         get { return _firstLake; }
     }
+
+    public static void setCenter(MapGraph.MapNode p)
+    {
+        _firstLake = p;
+    }
+
     private static void CreateLakes(MapGraph graph)
     {
         foreach (var node in graph.nodesByCenterPosition.Values)
