@@ -156,7 +156,7 @@ public partial class MapGraph
                 }
             }
         }
-        Debug.Assert(edgePointsRemoved == 0, string.Format("{0} edge points too close and have been removed", edgePointsRemoved));
+        //Debug.Assert(edgePointsRemoved == 0, string.Format("{0} edge points too close and have been removed", edgePointsRemoved));
 
         foreach (var site in voronoi.SiteCoords())
         {
