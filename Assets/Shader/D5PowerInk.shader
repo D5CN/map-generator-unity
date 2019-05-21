@@ -1,4 +1,4 @@
-﻿Shader "D5Power/Ink"
+﻿Shader "D5Power/D5PowerInk"
 {
 	Properties
 	{
@@ -187,8 +187,3 @@
 		}
 	}
 }
---------------------- 
-作者：ZzEeRO 
-来源：CSDN 
-原文：https://blog.csdn.net/qq_36107199/article/details/86507737 
-版权声明：本文为博主原创文章，转载请附上博文链接！
