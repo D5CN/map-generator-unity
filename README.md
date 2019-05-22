@@ -1,4 +1,4 @@
-# This is a demo project
+# About
 ![Image of Generated Map](https://github.com/D5-Howard/map-generator-unity/blob/master/Readme/demo.gif)
 
 This project was fork from Voronoi Map Generator,and I add some another function just like GPUInstance Grass supported,auto add vetex for bigger map,Porlin Noise Node map. It's just for learning.
