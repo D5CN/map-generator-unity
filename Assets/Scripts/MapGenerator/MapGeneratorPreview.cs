@@ -34,10 +34,12 @@ public partial class MapGeneratorPreview : MonoBehaviour
     public MeshRenderer meshRenderer;
     public MeshCollider meshCollider;
 
+
+    public static float SCALE_K;
     public void Start()
     {
-
         StartCoroutine(GenerateMapAsync());
+        SCALE_K = GameObject.Find("MapGenerator").transform.localScale.x;
     }
 
     public IEnumerator GenerateMapAsync()

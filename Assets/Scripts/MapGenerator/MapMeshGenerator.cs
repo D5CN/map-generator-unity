@@ -9,16 +9,20 @@ public static class MapMeshGenerator
     /**
      * 地图切割等级
      */ 
-    public static int CUT_LEVEL = 2;
+    public static int CUT_LEVEL = 3;
     public static int DISTANCE = 10;
     public static List<MapGraph.MapNode> nowNodeList= new List<MapGraph.MapNode>();
     private static float PL_relief = 100.0f;
-    private static float PL_maxHeight = 0.28f;
+    private static float PL_maxHeight = 0.14f;
+    private static bool makeGrass;
+    private static List<Vector3> grass_roots;
+    private static HeightMap hmap;
     public static MeshData GenerateMesh(MapGraph mapGraph, HeightMap heightmap, int meshSize)
     {
         var meshData = new MeshData();
         meshData.vertices = new List<Vector3>();
         meshData.indices = new List<int>();
+        hmap = heightmap;
 
         Vector2 p1 = new Vector2();
         Vector2 p2 = MapGenerator.firstLake==null ? new Vector2(0, 0) : new Vector2(MapGenerator.firstLake.centerPoint.x, MapGenerator.firstLake.centerPoint.z);
@@ -26,11 +30,13 @@ public static class MapMeshGenerator
         Vector3 v1 = new Vector3();
         Vector3 v2 = new Vector3();
         int count = 0;
+
         
         // 存放顶点与索引的临时字典类
         Dictionary<Vector3, int> verticesResultDic = new Dictionary<Vector3, int>();
 
         nowNodeList.RemoveAll(it=>true);
+        GameObject.Find("GrassMacker").SendMessage("clearCache");
 
         foreach (var node in mapGraph.nodesByCenterPosition.Values)
         {
@@ -39,6 +45,8 @@ public static class MapMeshGenerator
 
             if (Vector2.Distance(p1, p2) > DISTANCE) continue;
 
+            makeGrass = node.nodeType == MapGraph.MapNodeType.Grass;
+
             nowNodeList.Add(node);
             meshData.vertices.Add(node.centerPoint);
             v0 = node.centerPoint;
@@ -46,6 +54,7 @@ public static class MapMeshGenerator
 
             count++;
             int count_edges = edges.Count();
+            grass_roots = new List<Vector3>();
             for (var i = 0; i < count_edges; i++)
             {
                 
@@ -62,6 +71,12 @@ public static class MapMeshGenerator
                     v2 = v1;
                 }
             }
+
+            if(makeGrass && GameObject.Find("GrassMacker"))
+            {
+                System.Object[] opt = new System.Object[2] { node, grass_roots.ToArray() };
+                GameObject.Find("GrassMacker").SendMessage("addGrass", opt);
+            }
         }
 
         meshData.uvs = new Vector2[meshData.vertices.Count];
@@ -72,6 +87,11 @@ public static class MapMeshGenerator
 
         Debug.Log(string.Format("There are {0:n0} vertices ", meshData.vertices.Count()));
         return meshData;
+    }
+
+    public static HeightMap heightMap
+    {
+        get { return hmap; }
     }
 
     public static MapGraph.MapNode isIn(Vector2 p)
@@ -154,9 +174,9 @@ public static class MapMeshGenerator
         if (verticesResultDic.ContainsKey(vertice))
             return verticesResultDic[vertice];
 
+
         
-
-
+        if (makeGrass) grass_roots.Add(vertice);
         meshData.vertices.Add(vertice);
         int index = meshData.vertices.Count - 1;
         verticesResultDic.Add(vertice, index);
