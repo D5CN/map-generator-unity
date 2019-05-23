@@ -36,7 +36,8 @@ public static class MapMeshGenerator
         Dictionary<Vector3, int> verticesResultDic = new Dictionary<Vector3, int>();
 
         nowNodeList.RemoveAll(it=>true);
-        GameObject.Find("GrassMacker").SendMessage("clearCache");
+        var grassMacker = GameObject.Find("GrassMacker");
+        if(grassMacker) grassMacker.SendMessage("clearCache");
 
         foreach (var node in mapGraph.nodesByCenterPosition.Values)
         {

@@ -6,7 +6,8 @@ public class GpuGrass : MonoBehaviour
 {
     public uint grass_layer = 5;
     public float grass_width = .125f;
-    public uint count = 1023;
+    public float grass_scale = .4f;
+    private uint count = 1023;
     private Mesh mesh;
     // Start is called before the first frame update
     void Start()
@@ -14,19 +15,20 @@ public class GpuGrass : MonoBehaviour
         List<Vector3> newVertices = new List<Vector3>();
         List<int> newTriangles = new List<int>();
         float per = 1f / grass_layer;
-        float left = 0;
         int v0;
         int v1;
         int v2;
         int v3;
         Dictionary<Vector3, int> verticesResultDic = new Dictionary<Vector3, int>();
+        if (grass_layer < 2) grass_layer = 2;
+        
         for (var i=0;i<grass_layer;i++)
         {
 
-            v0 = AddVertices(verticesResultDic, newVertices, new Vector3(left, i * per, 0));
-            v1 = AddVertices(verticesResultDic, newVertices, new Vector3(left + grass_width, i * per, 0));
-            v2 = AddVertices(verticesResultDic, newVertices, new Vector3(left, (i + 1) * per, 0));
-            v3 = AddVertices(verticesResultDic, newVertices, new Vector3(left + grass_width, (i + 1) * per, 0));
+            v0 = AddVertices(verticesResultDic, newVertices, new Vector3(0, i * per, 0));
+            v1 = AddVertices(verticesResultDic, newVertices, new Vector3(grass_width, i * per, 0));
+            v2 = AddVertices(verticesResultDic, newVertices, new Vector3(0, (i + 1) * per, 0));
+            v3 = AddVertices(verticesResultDic, newVertices, new Vector3(grass_width, (i + 1) * per, 0));
 
             newTriangles.Add(v0);
             newTriangles.Add(v1);
@@ -89,7 +91,7 @@ public class GpuGrass : MonoBehaviour
         float k = MapGeneratorPreview.SCALE_K;
         //var rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         var rotation = Quaternion.Euler(0,0,0);
-        var matrix = Matrix4x4.TRS(new Vector3(x * k, y * k, z * k), rotation, Vector3.one*.4f);
+        var matrix = Matrix4x4.TRS(new Vector3(x * k, y * k, z * k), rotation, Vector3.one*grass_scale);
         list[index] = matrix;
     }
 
