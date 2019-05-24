@@ -8,10 +8,12 @@ Enjoy!
 # What's the next
 I am still keep developing this project.There may have some problem in this project for I am a freshmen in unity.^^
 
-Next step i am working for:
+Next step:
 
 1.add a real player into this screen.
+
 2.make full grass,not just in vertex.
+
 3.auto build trees and creatures
 
 # About Voronoi Map Generator
