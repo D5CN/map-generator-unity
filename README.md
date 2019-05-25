@@ -6,7 +6,7 @@ This project was fork from Voronoi Map Generator,and I add some another function
 Enjoy!
 
 # What's the next
-I am still keep developing this project.There may have some problem in this project for I am a freshmen in unity.^^
+I am still keep developing this project.Maybe there will have some problem in this project.^^
 
 Next step:
 
