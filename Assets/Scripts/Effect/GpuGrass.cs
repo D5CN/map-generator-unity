@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GpuGrass : MonoBehaviour
 {
+    /**
+     * The objects that can interactive with grass
+     */ 
+    GameObject[] objects;
+    Vector4[] positions = new Vector4[100];
     public uint grass_layer = 5;
     public float grass_width = .125f;
     public float grass_scale = .4f;
@@ -12,6 +17,8 @@ public class GpuGrass : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        objects = new GameObject[1];
+        objects[0] = GameObject.Find("DemoCube");
         List<Vector3> newVertices = new List<Vector3>();
         List<int> newTriangles = new List<int>();
         float per = 1f / grass_layer;
@@ -103,12 +110,23 @@ public class GpuGrass : MonoBehaviour
         var meshFilter = GetComponent<MeshFilter>();
         var mesh = meshFilter.sharedMesh;
 
-        foreach(var matrics in nodeList.Values)
+        // sway and interaction
+        if(objects!=null)
         {
-            Graphics.DrawMeshInstanced(mesh, 0, meshRenderer.sharedMaterial, matrics);
-        }
-        
+            for (int i = 0; i < objects.Length; i++)
+            {
+                positions[i] = objects[i].transform.position;
+            }
+            Shader.SetGlobalFloat("_PositionArray", objects.Length);
+            Shader.SetGlobalVectorArray("_Positions", positions);
 
-        
+            foreach (var matrics in nodeList.Values)
+            {
+                Graphics.DrawMeshInstanced(mesh, 0, meshRenderer.sharedMaterial, matrics);
+            }
+        }
+
+
+
     }
 }
